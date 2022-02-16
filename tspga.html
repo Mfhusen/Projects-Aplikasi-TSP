@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Project Skripsi TSP - Algoritma Genetika</title>
+
+
+</head>
+
+<body>
+
+    <div class="flex-container">
+        <div class="item-1">
+            <!-- <img src="./img/cpu.svg" alt="Logo Project"> -->
+            <h1>Aplikasi TSP - Algoritma Genetika</h1>
+            <p>
+                Aplikasi ini merupakan project skripsi untuk menyelesaikan permasalahan travelling salesman problem
+                dengan menggunakan algoritma genetika dan juga google maps api untuk menampilkan visual maps.
+            </p>
+
+            <div class="lokasi-tujuan">
+                <h2>Lokasi Destinasi</h2>
+                <button type="button" id="tambah_lokasi_tujuan">
+                    Tambah Lokasi
+                </button>
+                <button type="button" id="default_lokasi_tujuan">
+                    Default Lokasi
+                </button>
+
+                <input type="text" class="lokasi_tujuan m-wrap" id="lokasi_tujuan_0" data-id="0" autocomplete="off">
+                <input type="hidden" id="lokasi_tujuan_0_latitude" autocomplete="off">
+                <input type="hidden" id="lokasi_tujuan_0_longitude" autocomplete="off">
+            </div>
+
+            <div class="konfigurasi-algoritma">
+                <h2>Konfigurasi Algoritma Genetika</h2>
+
+                <label for="travel-type">Travel Mode</label>
+                <select class="m-wrap" id="travel-type">
+                    <option value="DRIVING">Mobil</option>
+                    <option value="WALKING">Jalan Kaki</option>
+                </select>
+
+                <label for="population-size">Jumlah Populasi</label>
+                <select id="population-size" class="m-wrap">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+
+                <label for="mutation-rate">Rasio Mutasi</label>
+                <select id="mutation-rate" class="m-wrap">
+                    <option value="0.00">0.00</option>
+                    <option value="0.01">0.01</option>
+                    <option value="0.05">0.05</option>
+                    <option value="0.1" selected>0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.7">0.7</option>
+                    <option value="1">1.0</option>
+                </select>
+
+                <label for="crossover-rate">Rasio Crossover</label>
+                <select id="crossover-rate" class="m-wrap">
+                    <option value="0.0">0.0</option>
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5" selected>0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                    <option value="1">1.0</option>
+                </select>
+
+                <label for="elitism">Elitism</label>
+                <select id="elitism" class="m-wrap">
+                    <option value="1" selected>Enabled</option>
+                    <option value="0">Disabled</option>
+                </select>
+
+                <label for="generations">Generations</label>
+                <select id="generations" class="m-wrap">
+                    <option value="20">20</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                </select>
+
+                <button id="find-route">Cari Rute</button>
+            </div>
+
+            <hr>
+
+            <div class="pembatas"></div>
+
+            <div class="debug-info">
+                <h2>Debug Info</h2>
+
+                <h3>Jumlah Lokasi:</h3>
+                <p id="destinations-count">0</p>
+                <br>
+
+                <div class="ga-info" style="display: none;">
+                    <h3>Generations:</h3>
+                    <p id="generations-passed">0</p>
+                </div>
+                <div class="ga-info" style="display: none;">
+                    <h3>Total Estimasi Jarak:</h3>
+                    <p id="best-distance">?</p>
+                </div>
+                <div class="ga-info" style="display: none">
+                    <h3>Summary Route</h3>
+                    <div id="summary_route"></div>
+                    <button type="button" onclick="$('#directions-panel').toggle();">
+                        View Detail Route
+                    </button>
+                    <div id="directions-panel"></div>
+                </div>
+            </div>
+        </div>
+        <div class="item-2">
+            <div id="map-canvas"></div>
+        </div>
+    </div>
+
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0BXk4lNbVzC-ltNRpAKH5EgbZvTktf_Q&libraries=places"></script> -->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA0BXk4lNbVzC-ltNRpAKH5EgbZvTktf_Q&libraries=places"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src="./fungsi.js"></script> -->
+        <script type="text/javascript" src="./functionGA.js"></script>
+</body>
+
+</html>
