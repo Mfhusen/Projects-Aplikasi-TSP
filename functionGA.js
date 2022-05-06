@@ -14,65 +14,46 @@ var distances = [];
 
 // MEMBUAT HARDCODE DEFAULT LOKASI BERDASARKAN NAMA LOKASI, LATITUDE DAN LONGITUDE
 var destinationsDefault = [
-  [
-      "Istana Anak-Anak Indonesia",
-      -6.302011,
-      106.900207
-  ],
-  [
-      "Anjungan Bali",
-      -6.302664,
-      106.897567
-  ],
-  [
-      "Sasono Adiguno TMII",
-      -6.301907,
-      106.891441
-  ],
-  [
-      "Museum HAKKA Indonesia",
-      -6.305194,
-      106.903967
-  ],
-  [
-      "Teater IMAX Keong Emas",
-      -6.304473,
-      106.890819
-  ],
-  [
-      "Museum Indonesia",
-      -6.301047,
-      106.891444
-  ],
-  [
-      "Museum Purna Bakti Pertiwi",
-      -6.300346,
-      106.886441
-  ]
+  ["Istana Anak-Anak Indonesia", -6.302011, 106.900207],
+  ["Anjungan Bali", -6.302664, 106.897567],
+  ["Sasono Adiguno TMII", -6.301907, 106.891441],
+  ["Museum HAKKA Indonesia", -6.305194, 106.903967],
+  ["Teater IMAX Keong Emas", -6.304473, 106.890819],
+  ["Museum Indonesia", -6.301047, 106.891444],
+  ["Museum Purna Bakti Pertiwi", -6.300346, 106.886441],
 ];
 var defaultDest = false;
 
 // MENENTUKAN DESTINASI TUJUAN
-var counter_lokasi_tujuan = $(".lokasi-tujuan").length - 1;
+var hitung_konten_lokasi = $(".lokasi-tujuan").length - 1;
 function auto_isi() {
   if (!defaultDest) {
     // SET DESTINATION
     for (var i = 0; i < destinationsDefault.length; i++) {
       if (i > 0) {
-        counter_lokasi_tujuan++;
+        hitung_konten_lokasi++;
         // MENGISI INPUT BOX DENGAN DEFAULT HARDCODE LOKASI YANG SUDAH DITENTUKAN
         var konten =
-            '<div class="lokasi-tujuan" id="lokasi-tujuan-' + counter_lokasi_tujuan + '">' + 
-
-            '<input type="text" class="lokasi_tujuan m-wrap" autocomplete="off" id="lokasi_tujuan_'+ 
-            counter_lokasi_tujuan + '" data-id="' + counter_lokasi_tujuan + '">' +
-            '<input type="hidden" id="lokasi_tujuan_' + counter_lokasi_tujuan + 
-            '_latitude" autocomplete="off">' +
-            '<input type="hidden" id="lokasi_tujuan_' + counter_lokasi_tujuan + 
-            '_longitude" autocomplete="off">'+
-            '<button type="button" class="hapus_lokasi_tujuan" data-id="' + 
-            counter_lokasi_tujuan + '">' + "Hapus" + "</button>" +
-            '</div>';
+          '<div class="lokasi-tujuan" id="lokasi-tujuan-' +
+          hitung_konten_lokasi +
+          '">' +
+          '<input type="text" class="lokasi_tujuan m-wrap" autocomplete="off" id="lokasi_tujuan_' +
+          hitung_konten_lokasi +
+          '" data-id="' +
+          hitung_konten_lokasi +
+          '">' +
+          '<input type="hidden" id="lokasi_tujuan_' +
+          hitung_konten_lokasi +
+          '_latitude" autocomplete="off">' +
+          '<input type="hidden" id="lokasi_tujuan_' +
+          hitung_konten_lokasi +
+          '_longitude" autocomplete="off">' +
+          '<button type="button" class="hapus_lokasi_tujuan" data-id="' +
+          hitung_konten_lokasi +
+          '">' +
+          "Hapus" +
+          "</button>" +
+          "</div>";
         $("div.lokasi-tujuan").last().after(konten);
       }
 
@@ -138,119 +119,129 @@ $(document).on("click", "#default_lokasi_tujuan", function () {
 
 // MEMBUAT FUNGSI UNTUK LOKASI TUJUAN PERTAMA
 var lokasi_tujuan = new google.maps.places.Autocomplete(
-    document.getElementById("lokasi_tujuan_0"),
-    {
-      types: ["establishment"],
-      componentRestrictions: { country: "idn" },
-    }
+  document.getElementById("lokasi_tujuan_0"),
+  {
+    types: ["establishment"],
+    componentRestrictions: { country: "idn" },
+  }
 );
 lokasi_tujuan.addListener("place_changed", function () {
-    var place = lokasi_tujuan.getPlace();
-    var latitude = place.geometry.location.lat();
-    var longitude = place.geometry.location.lng();
-    $("#lokasi_tujuan_0_latitude").val(latitude);
-    $("#lokasi_tujuan_0_longitude").val(longitude);
+  var place = lokasi_tujuan.getPlace();
+  var latitude = place.geometry.location.lat();
+  var longitude = place.geometry.location.lng();
+  $("#lokasi_tujuan_0_latitude").val(latitude);
+  $("#lokasi_tujuan_0_longitude").val(longitude);
 });
 
 // FUNGSI UNTUK LOKASI TUJUAN SELANJUTNYA
-var counter_lokasi_tujuan = $(".lokasi-tujuan").length - 1;
+var hitung_konten_lokasi = $(".lokasi-tujuan").length - 1;
 // FUNGSI UNTUK TOMBOL TAMBAH LOKASI TUJUAN SAAT DI CLICK
 $(document).on("click", "#tambah_lokasi_tujuan", function () {
+  // MEMUNCULKAN ALERT DIALOG SAAT INPUT BOX KOSONG DAN TOMBOL TAMBAH LOKASI DI CLICK
+  if ($("#lokasi_tujuan_" + hitung_konten_lokasi).val() == "") {
+    alert("Lokasi Dibutuhkan! Input Box Tidak Boleh Kosong.");
+    document.getElementById("lokasi_tujuan_" + hitung_konten_lokasi).focus();
+    return false;
+  }
 
-    // MEMUNCULKAN ALERT DIALOG SAAT INPUT BOX KOSONG DAN TOMBOL TAMBAH LOKASI DI CLICK
-    if ($("#lokasi_tujuan_" + counter_lokasi_tujuan).val() == "") {
-        alert("Lokasi Dibutuhkan! Input Box Tidak Boleh Kosong.");
-        document.getElementById("lokasi_tujuan_" + counter_lokasi_tujuan).focus();
-        return false;
-    }
+  // MEMUNCULKAN ALERT DIALOG SAAT MENGINPUT LOKASI YANG TIDAK VALID DAN TOMBOL TAMBAH LOKASI DI CLICK
+  if (
+    $("#lokasi_tujuan_" + hitung_konten_lokasi + "_latitude").val() == "" &&
+    $("#lokasi_tujuan_" + hitung_konten_lokasi).val() != ""
+  ) {
+    alert("Lokasi Tidak Ditemukan! Silahkan Periksa Kembali Inputan Anda.");
+    document.getElementById("lokasi_tujuan_" + hitung_konten_lokasi).focus();
+    return false;
+  }
 
-    // MEMUNCULKAN ALERT DIALOG SAAT MENGINPUT LOKASI YANG TIDAK VALID DAN TOMBOL TAMBAH LOKASI DI CLICK
-    if ( $("#lokasi_tujuan_" + counter_lokasi_tujuan + "_latitude").val() == "" && $("#lokasi_tujuan_" +       counter_lokasi_tujuan).val() != "" ) {
-        alert(
-        "Lokasi Tidak Ditemukan! Silahkan Periksa Kembali Inputan Anda."
-        );
-        document.getElementById("lokasi_tujuan_" + counter_lokasi_tujuan).focus();
-        return false;
-    }
+  // MEMUNCULKAN ALERT DIALOG SAAT JUMLAH LOKASI SUDAH MELEBIHI BATAS MAKSIMAL
+  if ($(".lokasi-tujuan").length == 9) {
+    alert("Jumlah Lokasi Sudah Maksimal!");
+    return;
+  }
+  hitung_konten_lokasi++;
+  var konten =
+    '<div class="lokasi-tujuan" id="lokasi-tujuan-' +
+    hitung_konten_lokasi +
+    '">' +
+    '<input type="text" class="lokasi_tujuan m-wrap" autocomplete="off" id="lokasi_tujuan_' +
+    hitung_konten_lokasi +
+    '" data-id="' +
+    hitung_konten_lokasi +
+    '">' +
+    '<input type="hidden" id="lokasi_tujuan_' +
+    hitung_konten_lokasi +
+    '_latitude" autocomplete="off">' +
+    '<input type="hidden" id="lokasi_tujuan_' +
+    hitung_konten_lokasi +
+    '_longitude" autocomplete="off">' +
+    '<button type="button" class="hapus_lokasi_tujuan" data-id="' +
+    hitung_konten_lokasi +
+    '">' +
+    "Hapus" +
+    "</button>" +
+    "</div>";
+  $("div.lokasi-tujuan:last").after(konten);
 
-    // MEMUNCULKAN ALERT DIALOG SAAT JUMLAH LOKASI SUDAH MELEBIHI BATAS MAKSIMAL
-    if ($(".lokasi-tujuan").length == 9) {
-        alert("Jumlah Lokasi Sudah Maksimal!");
-        return;
-    }
-    counter_lokasi_tujuan++;
-    var konten =
-        '<div class="lokasi-tujuan" id="lokasi-tujuan-' + counter_lokasi_tujuan + '">' + 
-        '<input type="text" class="lokasi_tujuan m-wrap" autocomplete="off" id="lokasi_tujuan_'+ 
-        counter_lokasi_tujuan + '" data-id="' + counter_lokasi_tujuan + '">' +
-        '<input type="hidden" id="lokasi_tujuan_' + counter_lokasi_tujuan + 
-        '_latitude" autocomplete="off">' +
-        '<input type="hidden" id="lokasi_tujuan_' + counter_lokasi_tujuan + 
-        '_longitude" autocomplete="off">'+
-        '<button type="button" class="hapus_lokasi_tujuan" data-id="' + 
-        counter_lokasi_tujuan + '">' + "Hapus" + "</button>" +
-        '</div>';
-    $("div.lokasi-tujuan:last").after(konten);
+  var inputs = document.getElementsByClassName("lokasi_tujuan");
+  var autocompletes = [];
 
-    var inputs = document.getElementsByClassName("lokasi_tujuan");
-    var autocompletes = [];
+  for (var i = 0; i < inputs.length; i++) {
+    var autocomplete = new google.maps.places.Autocomplete(inputs[i], {
+      types: ["address"],
+      componentRestrictions: { country: "idn" },
+    });
+    autocomplete.inputId = inputs[i].id;
+    autocomplete.addListener("place_changed", fillIn);
+    autocompletes.push(autocomplete);
+  }
 
-    for (var i = 0; i < inputs.length; i++) {
-        var autocomplete = new google.maps.places.Autocomplete(inputs[i], {
-        types: ["address"],
-        componentRestrictions: { country: "idn" },
-        });
-        autocomplete.inputId = inputs[i].id;
-        autocomplete.addListener("place_changed", fillIn);
-        autocompletes.push(autocomplete);
-    }
-
-    for (var i = 0; i < inputs.length; i++) {
-      var autocomplete = new google.maps.places.Autocomplete(inputs[i], {
+  for (var i = 0; i < inputs.length; i++) {
+    var autocomplete = new google.maps.places.Autocomplete(inputs[i], {
       types: ["geocode"],
       componentRestrictions: { country: "idn" },
-      });
-      autocomplete.inputId = inputs[i].id;
-      autocomplete.addListener("place_changed", fillIn);
-      autocompletes.push(autocomplete);
-    }
+    });
+    autocomplete.inputId = inputs[i].id;
+    autocomplete.addListener("place_changed", fillIn);
+    autocompletes.push(autocomplete);
+  }
 
-    for (var i = 0; i < inputs.length; i++) {
-        var autocomplete = new google.maps.places.Autocomplete(inputs[i], {
-        types: ["establishment"],
-        componentRestrictions: { country: "idn" },
-        });
-        autocomplete.inputId = inputs[i].id;
-        autocomplete.addListener("place_changed", fillIn);
-        autocompletes.push(autocomplete);
-    }
+  for (var i = 0; i < inputs.length; i++) {
+    var autocomplete = new google.maps.places.Autocomplete(inputs[i], {
+      types: ["establishment"],
+      componentRestrictions: { country: "idn" },
+    });
+    autocomplete.inputId = inputs[i].id;
+    autocomplete.addListener("place_changed", fillIn);
+    autocompletes.push(autocomplete);
+  }
 
-    function fillIn() {
-        var id = this.inputId;
-        var place = this.getPlace();
-        var latitude = place.geometry.location.lat();
-        var longitude = place.geometry.location.lng();
+  function fillIn() {
+    var id = this.inputId;
+    var place = this.getPlace();
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
 
-        $("#" + id + "_latitude").val(latitude);
-        $("#" + id + "_longitude").val(longitude);
-    }
+    $("#" + id + "_latitude").val(latitude);
+    $("#" + id + "_longitude").val(longitude);
+  }
 });
 
 // FUNGSI UNTUK MENGHAPUS LOKASI TUJUAN
 $(document).on("click", ".hapus_lokasi_tujuan", function () {
-    var id = $(this).data("id");
-    $("#lokasi-tujuan-" + id).remove();
+  var id = $(this).data("id");
+  $("#lokasi-tujuan-" + id).remove();
 });
 
 // FUNGSI UNTUK MENAMPILKAN GOOGLE MAPS
 function initializeMap() {
-    map = new google.maps.Map(document.getElementById("map-canvas"),{
-        center: { lat: -6.302478152274517, lng: 106.8951792972926},
-        zoom: 16,
-        mapTypeId: "hybrid",
-        streetViewControl: false,
-        mapTypeControl: false,
-    });
+  map = new google.maps.Map(document.getElementById("map-canvas"), {
+    center: { lat: -6.302478152274517, lng: 106.8951792972926 },
+    zoom: 16,
+    mapTypeId: "hybrid",
+    streetViewControl: false,
+    mapTypeControl: false,
+  });
 }
 
 // FUNGSI UNTUK MENDAPATKAN INFO PERJALANAN (TOTAL DURASI PERJALAN DAN WAKTU)
@@ -272,13 +263,13 @@ function getDistance(callback) {
   });
 
   // MENDAPATKAN JUMLAH TOTAL LOKASI TUJUAN
-  $("#destinations-count").html(nodes.length);
+  $("#jumlah-lokasi").html(nodes.length);
 
   service.getDistanceMatrix(
     {
       origins: nodes,
       destinations: nodes,
-      travelMode: google.maps.TravelMode[$("#travel-type").val()],
+      travelMode: google.maps.TravelMode[$("#tipe-perjalanan").val()],
       avoidHighways: false,
       avoidTolls: false,
     },
@@ -290,7 +281,8 @@ function getDistance(callback) {
         distances[originNodeIndex] = [];
         for (destinationNodeIndex in nodeDistanceData) {
           if (
-            (distances[originNodeIndex][destinationNodeIndex] = nodeDistanceData[destinationNodeIndex].distance == undefined)
+            (distances[originNodeIndex][destinationNodeIndex] =
+              nodeDistanceData[destinationNodeIndex].distance == undefined)
           ) {
             alert("Error: couldn't get a trip distance from API");
             return;
@@ -339,7 +331,7 @@ function clearMap() {
   clearMapMarkers();
   clearDirections();
 
-  $("#destinations-count").html("0");
+  $("#jumlah-lokasi").html("0");
 }
 
 // Initial Google Maps
@@ -349,15 +341,15 @@ google.maps.event.addDomListener(window, "load", initializeMap);
 $("#clear-map").click(clearMap);
 
 // MEMBUAT EVENT LISTENERS UNTUK MENJALANKAN PROGRAM DENGAN MENGGUNAKAN ALGORITMA GENETIKA
-$("#find-route").click(function () {
+$("#cari-rute").click(function () {
   initMap();
 });
 
 // MEMBUAT FUNGSI UNTUK MENGELOLA DATA DARI PERHITUNGAN ALGORITMA GENETIKA
-function initMap(){
-  $("#best-distance").html("?");
-  $("#summary_route").html("?");
-  $("#directions-panel").hide();
+function initMap() {
+  $("#jarak-terbaik").html("?");
+  $("#rangkuman-rute").html("?");
+  $("#panel-petunjuk").hide();
   var nodes = [];
   // MENDAPATKAN NILAI LAT DAN LONG DARI LOKASI ASAL
   $(".lokasi_tujuan").each(function (i, obj) {
@@ -383,7 +375,7 @@ function initMap(){
       return;
     }
   }
-  
+
   if (directionsDisplay != null) {
     directionsDisplay.setMap(null);
     directionsDisplay = null;
@@ -393,8 +385,8 @@ function initMap(){
 
   // FUNGSI UNTUK MENDAPATKAN DATA DURASI RUTE PERJALANAN
   getDistance(function () {
-    $(".ga-info").show();
-    
+    $(".info-algoritma").show();
+
     // MENGAMBIL NILAI CONFIG ALGORITMA GENETIKA DAN MEMBUAT POPULASI ALGORITMA GENETIKA
     ga.getConfig();
 
@@ -412,7 +404,7 @@ function initMap(){
       pop,
       function (update) {
         // Menampilkan generation yang sudah selesai di front-end html
-        $("#generations-passed").html(update.generation);
+        $("#jumlah-generasi").html(update.generation);
 
         // Get route coordinates
         // Simpan kromosom dengan nilai fittest paling baik di generation sekarang ke route
@@ -426,7 +418,7 @@ function initMap(){
         // Di routeCoordinates terakhir tambah node di route ke 0
         routeCoordinates[route.length] = nodes[route[0]];
 
-        // Tampilkan Polyline dari routeCoordinates setiap generation di peta dengan warna #0066ff  
+        // Tampilkan Polyline dari routeCoordinates setiap generation di peta dengan warna #0066ff
         // Display temp. route
         if (polylinePath != undefined) {
           polylinePath.setMap(null);
@@ -459,7 +451,7 @@ function initMap(){
             location: nodes[route[i]],
             stopover: true,
           });
-        } 
+        }
 
         /* 
         Setting request dengan origin node awal dari route awal ke destination route awal Kembali, waypoint : wapts, optimizeWaypoint : false, travelMode, sesuai dengan yang dipilih, avoidHighways : false, dan avoidTolls : false.
@@ -470,7 +462,7 @@ function initMap(){
           destination: nodes[route[0]],
           waypoints: waypts,
           optimizeWaypoints: false,
-          travelMode: google.maps.TravelMode[$("#travel-type").val()],
+          travelMode: google.maps.TravelMode[$("#tipe-perjalanan").val()],
           avoidHighways: false,
           avoidTolls: false,
         };
@@ -489,8 +481,8 @@ function initMap(){
               return alphabet;
             }
 
-            // Initialisasi summary_route = “”, totalDist = 0, dan myroute = route pertama dari response
-            var summary_route = "";
+            // Initialisasi rangkuman-rute = “ ”, totalDist = 0, dan myroute = route pertama dari response
+            var rangkuman_rute = "";
             var totalDist = 0;
             var myroute = response.routes[0];
 
@@ -502,45 +494,43 @@ function initMap(){
 
               // Tampilkan urutan huruf, alamat jalan awal rute dan jarak jalan rute.
               // UNTUK MENAMPILKAN ESTIMASI JARAK PER RUTE
-              summary_route += "<p>";
-              summary_route +=
+              rangkuman_rute += "<p>";
+              rangkuman_rute +=
                 '<strong style="color:red;">' +
                 next_huruf() +
                 "</strong>. " +
                 myroute.legs[i].start_address;
-              summary_route += "<br>";
-              summary_route +=
-                "<strong>" +
-                jarak_route +
-                " </strong>";
-              summary_route += "</p>";
+              rangkuman_rute += "<br>";
+              rangkuman_rute += "<strong>" + jarak_route + " </strong>";
+              rangkuman_rute += "</p>";
 
               // Jika sudah jalan rute terakhir maka tampilkan urutan huruf , alamat jalan rute dan jarak jalan rute.
               if (i + 1 == myroute.legs.length) {
                 // UNTUK MENAMPILKAN ESTIMASI JARAK PER RUTE
-                summary_route += "<p>";
-                summary_route +=
+                rangkuman_rute += "<p>";
+                rangkuman_rute +=
                   '<strong style="color:red;">' +
                   next_huruf() +
                   "</strong>. " +
                   myroute.legs[i].end_address;
-                summary_route += "<br>";
-                summary_route += "<strong> </strong>";
-                summary_route += "</p>";
+                rangkuman_rute += "<br>";
+                rangkuman_rute += "<strong> </strong>";
+                rangkuman_rute += "</p>";
               }
             }
 
-            // Tampilkan jarak (totalDist) dalam format KM dan summary_route
+            // Tampilkan jarak (totalDist) dalam format KM dan rangkuman_rute
             // UNTUK MENAMPILKAN TOTAL ESTIMASI JARAK
             var jarak = totalDist / 1000;
-            document.getElementById("best-distance").innerHTML = jarak + " KM";
-            document.getElementById("summary_route").innerHTML = summary_route;
+            document.getElementById("jarak-terbaik").innerHTML = jarak + " KM";
+            document.getElementById("rangkuman_rute").innerHTML =
+              rangkuman_rute;
 
             //menampilkan rute pada peta dan juga direction panel sebagai petunjuk text
-            $("#directions-panel").html("");
-            directionsDisplay.setMap(map);
+            $("#panel-petunjuk").html("");
+            directionsDisplay.set(map);
             directionsDisplay.setPanel(
-              document.getElementById("directions-panel")
+              document.getElementById("panel-petunjuk")
             );
 
             // menampilkan layer traffic atau lalu-lintas pada peta
@@ -555,13 +545,13 @@ function initMap(){
   });
 }
 
- // KODE PENERAPAN ALGORITMA GENETIKA
+// KODE PENERAPAN ALGORITMA GENETIKA
 
- /*
+/*
 DEFAULT CONFIG ALGORITMA GENETIKA
 Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti crossoverRate 0.5,  mutationRate 0.1, jumlah populasi 50, elitism true, maxGenerations 50, tickerSpeed 60.
 */
- var ga = {
+var ga = {
   crossoverRate: 0.5,
   mutationRate: 0.1,
   populationSize: 50,
@@ -574,9 +564,9 @@ Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti c
   Mengembalikan nilai pengaturan default untuk algoritma genetika jika tidak diubah maka nilai pengaturan default algoritma genetika dikembalikan
   */
   getConfig: function () {
-    ga.crossoverRate = parseFloat($("#crossover-rate").val());
-    ga.mutationRate = parseFloat($("#mutation-rate").val());
-    ga.populationSize = parseInt($("#population-size").val()) || 50;
+    ga.crossoverRate = parseFloat($("#rasio-crossover").val());
+    ga.mutationRate = parseFloat($("#rasio-mutasi").val());
+    ga.populationSize = parseInt($("#jumlah-populasi").val()) || 50;
     ga.elitism = parseInt($("#elitism").val()) || false;
     ga.maxGenerations = parseInt($("#maxGenerations").val()) || 50;
   },
@@ -588,7 +578,6 @@ Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti c
     generationCallBack,
     completeCallBack
   ) {
-
     // Initialisasi generasi sekarang dengan nilai awal 1
     // Start evolution
     var generation = 1;
@@ -728,9 +717,9 @@ Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti c
         // Jika individual pertama atau == 0 maka nilai C sama dengan nilai P, jika merupakan individual terakhir atau == jumlah individual C = 1, Jika tidak maka C = Ck = Pk-1 +Pk
         if (i == 0) {
           C[i] = P[i];
-        }else if(i == this.individuals.length){
+        } else if (i == this.individuals.length) {
           C[i] = 1;
-        }else{
+        } else {
           C[i] = C[i - 1] + P[i];
         }
       }
@@ -754,12 +743,11 @@ Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti c
       return rouletteWheelPopulation.getFittest();
     };
 
-
     // Return the fittest individual's population index
     this.getFittestIndex = function () {
       // Nilai fittestIndex = 0
       var fittestIndex = 0;
-      
+
       // Looping sebanyak jumlah individual
       // Loop over population looking for fittest
       for (var i = 1; i < this.individuals.length; i++) {
@@ -803,9 +791,7 @@ Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti c
       // Looping sebanyak Panjang kromosom. Kemudian buat angka random kemudian kalikan dengan Panjang kromosom lalu bulatkan kebawah gunakan sebagai randomIndex untuk memilih kromosom yang akan diganti nilainya dengan kromosom ke-I atau sekarang.
       for (var i = 0; i < this.chromosomeLength; i++) {
         // Buat randomIndex dengan kalikan bilangan random dengan Panjang kromosom kemudian bulatkan kebawah.
-        var randomIndex = Math.floor(
-          Math.random() * this.chromosomeLength
-        );
+        var randomIndex = Math.floor(Math.random() * this.chromosomeLength);
         // Kemudian simpan hasil kromosom index ke randomIndex ke tempNode dan swap ke kromosom ke index
         var tempNode = this.chromosome[randomIndex];
         this.chromosome[randomIndex] = this.chromosome[i];
@@ -827,9 +813,7 @@ Nilai pengaturan default untuk algoritma genetika yang akan dijalankan seperti c
       // Loop over chromosome making random changes
       for (index in this.chromosome) {
         if (ga.mutationRate > Math.random()) {
-          var randomIndex = Math.floor(
-            Math.random() * this.chromosomeLength
-          );
+          var randomIndex = Math.floor(Math.random() * this.chromosomeLength);
           var tempNode = this.chromosome[randomIndex];
           this.chromosome[randomIndex] = this.chromosome[index];
           this.chromosome[index] = tempNode;

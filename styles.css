@@ -100,23 +100,23 @@ hr{
     margin: 30px 0;
 }
 
-.debug-info{
+.info-hasil{
     margin-top: 20px;
 }
 
-.debug-info h3{
+.info-hasil h3{
     font-size: 16px;
 }
 
-.debug-info p{
+.info-hasil p{
     font-size: 14px;
 }
 
-.debug-info h3, p{
+.info-hasil h3, p{
     display: inline-block;
 }
 
-#directions-panel{
+#panel-petunjuk{
     width: 100%;
     overflow: auto;
     display: none;
