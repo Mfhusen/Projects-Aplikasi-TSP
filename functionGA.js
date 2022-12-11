@@ -523,7 +523,7 @@ function initMap() {
             // UNTUK MENAMPILKAN TOTAL ESTIMASI JARAK
             var jarak = totalDist / 1000;
             document.getElementById("jarak-terbaik").innerHTML = jarak + " KM";
-            document.getElementById("rangkuman_rute").innerHTML =
+            document.getElementById("rangkuman-rute").innerHTML =
               rangkuman_rute;
 
             //menampilkan rute pada peta dan juga direction panel sebagai petunjuk text
